@@ -4,11 +4,9 @@ From ubuntu:18.04
 ENV TZ=America/Chicago
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update
-RUN apt-get install -y curl
-
 # Updating the packages in base image
 RUN apt update -y && apt upgrade -y
+RUN apt-get install -y curl
 
 # Install essential tools
 RUN apt install -y acl curl wget git software-properties-common unzip zip
@@ -23,9 +21,6 @@ RUN apt install -y php7.2 php7.2-fpm php7.2-cli php7.2-common php7.2-apcu \
 RUN apt remove apache2* \
     && apt autoremove \
     && apt install -y nginx
-
-# Updating the packages in base image
-RUN apt update -y && apt upgrade -y
 
 COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
