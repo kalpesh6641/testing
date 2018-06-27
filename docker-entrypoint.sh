@@ -1,4 +1,4 @@
-#!/bin/bash /bin/sh
+#!/bin/bash
 set -e
 
 # restarting the nginx
