@@ -9,10 +9,6 @@ COPY scripts/sources.list /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y curl
 
-# Add usbank certs
-RUN curl -o /usr/share/ca-certificates/usb_ca_chain.crt https://mra-repo1.us.bank-dns.com/artifactory/centos7/usb_ca_chain.crt --insecure
-RUN echo "usb_ca_chain.crt" >> /etc/ca-certificates.conf && update-ca-certificates
-
 # Updating the packages in base image
 RUN apt update -y && apt upgrade -y
 
@@ -33,7 +29,7 @@ RUN apt remove apache2* \
 # Updating the packages in base image
 RUN apt update -y && apt upgrade -y
 
-COPY scripts/docker-entrypoint.sh /usr/local/bin
+COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Adding grav user to the image
@@ -52,7 +48,7 @@ RUN rm -f /etc/nginx/sites-enabled/* \
 RUN cd /etc/php/7.2/fpm/pool.d/ && mv www.conf www.conf.bak
 
 # Grav Configuration
-COPY scripts/grav.conf /etc/php/7.2/fpm/pool.d
+COPY grav.conf /etc/php/7.2/fpm/pool.d
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php
@@ -66,7 +62,7 @@ RUN su grav -c "mkdir -p ~/www/html && echo \"<?php phpinfo();\" >> ~/www/html/i
 RUN cd /home/grav/www && chown -R grav:www-data html/
 
 # Add /etc/nginx/sites-available/
-COPY scripts/grav /etc/nginx/sites-available/
+COPY grav /etc/nginx/sites-available/
 
 RUN ln -s /etc/nginx/sites-available/grav /etc/nginx/sites-enabled/
 
