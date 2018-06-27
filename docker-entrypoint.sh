@@ -1,4 +1,4 @@
-#!/bin/dumb-init /bin/sh
+#!/bin/bash /bin/sh
 set -e
 
 # restarting the nginx
